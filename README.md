@@ -12,4 +12,4 @@ Jay Little
 2. Open two shell prompts within the PCTY.Web subdirectory of the repo
 3. In the first shell, run: yarn run watch
 4. In the second shell, run: dotnet build && dotnet run -- --dev
-5. Go to http://localhost:50000 in your preferred modern browser
+5. Go to http://localhost:5000 in your preferred modern browser
