@@ -1,0 +1,12 @@
+@import "~bootstrap/scss/bootstrap";
+@import "~bootstrap-vue/src/index.scss";
+
+.application-version {
+  background-color: black;
+  color: white;
+  width: auto;
+  opacity: 0.8;
+  display: inline-block;
+  right: 0;
+  left: auto;
+}

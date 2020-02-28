@@ -1,0 +1,28 @@
+@model PCTY.Web.Models.AppStateModel
+@using PCTY.Web.Models
+@using PCTY.Web.Helpers
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="@Model.RelativeBaseUrl">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>PCTY Code Challenge 2019 - Jay Little</title>
+    <script src="@Html.ContentHashFile("dist/3rdparty.min.js")"></script>
+    <script src="@Html.ContentHashFile("dist/styles-default.min.js")"></script>
+  </head>
+  <body class="mb-md-5">
+    <script type="text/javascript">
+      window.appState = @Html.Raw(Model.Json());
+    </script>
+    <script src="@Html.ContentHashFile("dist/main.min.js")"></script>
+    @RenderBody()
+    <script src="@Html.ContentHashFile($"dist/{Model.VueComponent}-loader.min.js")"></script>
+    <div class="application-version fixed-bottom d-none d-print-none d-md-block p-1">
+      <p class="font-weight-light mb-1 mx-2 text-right text-lowercase">
+        @Model.Version
+      </p>
+    </div>
+    @RenderSection("scripts", required: false)
+  </body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "version": "0.1.0",
+  "tasks": [
+    {
+      "taskName": "build",
+      "command": "dotnet",
+      "isShellCommand": true,
+      "args": [
+        "build",
+        "${workspaceRoot}/PCTY.Web/PCTY.Web.csproj"
+      ],
+      "isBuildCommand": true,
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "taskName": "test",
+      "command": "dotnet",
+      "isShellCommand": true,
+      "args": [
+        "xunit",
+        "-verbose"
+      ],
+      "options": {
+        "cwd": "${workspaceRoot}/PCTY.Tests"
+      },
+      "isTestCommand": true
+    }
+  ]
+}
