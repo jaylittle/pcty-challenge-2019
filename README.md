@@ -7,7 +7,7 @@
 Jay Little
 
 # How
----
+
 1. Clone this git repository
 2. Open two shell prompts within the PCTY.Web subdirectory of the repo
 3. In the first shell, run: yarn run watch
