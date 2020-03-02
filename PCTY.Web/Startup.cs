@@ -167,9 +167,12 @@ namespace PCTY.Web
       {
         await next();
 
+        var request = context.Request;
         var response = context.Response;
 
-        if (response.StatusCode == (int)HttpStatusCode.Unauthorized || response.StatusCode == (int)HttpStatusCode.Forbidden) {
+        if (!request.Path.ToString().StartsWith("/api", StringComparison.OrdinalIgnoreCase) &&
+          (response.StatusCode == (int)HttpStatusCode.Unauthorized || response.StatusCode == (int)HttpStatusCode.Forbidden)
+        ) {
           response.Redirect("/log/in");
         }
       });
