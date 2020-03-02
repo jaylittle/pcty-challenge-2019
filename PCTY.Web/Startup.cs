@@ -25,6 +25,8 @@ using PCTY.Web.Security;
 using PCTY.Data;
 using PCTY.Data.Providers;
 using PCTY.Data.Interfaces;
+using PCTY.Logic;
+using PCTY.Logic.Interfaces;
 
 namespace PCTY.Web
 {
@@ -81,6 +83,8 @@ namespace PCTY.Web
       services.AddScoped<ISettingsProvider, SettingsProvider>();
       services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
       services.AddScoped<IVersionDal, VersionDal>();
+      services.AddScoped<IEmployeeDal, EmployeeDal>();
+      services.AddScoped<IEmployeeBL, EmployeeBL>();
 
       // Add JWT authorization
       var secretKey = PCTY.Shared.Settings.Current.SecretKey.ToString();
