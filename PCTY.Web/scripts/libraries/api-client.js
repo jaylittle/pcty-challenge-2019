@@ -9,6 +9,20 @@ let self = module.exports = {
     }
     return currentUrl;
   },
+  employee: {
+    list() {
+      return Vue.http.get(self.fixUrl(`/api/employee`));
+    },
+    get(employeeId) {
+      return Vue.http.get(self.fixUrl(`/api/employee/${employeeId}`));
+    },
+    upsert(employee) {
+      return Vue.http.post(self.fixUrl(`/api/employee/`), employee);
+    },
+    calculateBenefitCost(employee) {
+      return Vue.http.post(self.fixUrl(`/api/employee/action/calculate-benefit-cost`), employee);
+    }
+  },
   state: {
     isAuthorized(tenantId) {
       return Vue.http.get(self.fixUrl(`/api/state/isAuthorized`));

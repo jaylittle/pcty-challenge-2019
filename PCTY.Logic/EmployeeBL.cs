@@ -47,7 +47,7 @@ namespace PCTY.Logic
       if (retvalue.Successful)
       {
         record.Dependents = record.Dependents ?? new List<DependentModel>();
-        
+
         record.UpdateGuid();
         record.UpdateTimestamps(existingRecord == null);
         record.BenefitCost = record.GetBenefitCosts();
@@ -69,8 +69,9 @@ namespace PCTY.Logic
           var dependentTasks = new List<Task>();
           foreach (var dependent in record.Dependents)
           {
-            record.UpdateTimestamps(Guid.Empty.Equals(dependent.Guid));
+            dependent.UpdateTimestamps(Guid.Empty.Equals(dependent.Guid));
             dependent.UpdateGuid();
+            dependent.EmployeeGuid = record.Guid;
           }
           var existingDependents = new Dictionary<Guid, DependentModel>();
           if (existingRecord != null && existingRecord.Dependents != null)

@@ -1,5 +1,5 @@
 <template>
-  <div id="appWebHeader">
+  <div id="appWebHeader" class="pb-3">
     <b-navbar toggleable="md" :type="navType" :variant="navVariant">
 
       <b-navbar-brand>
@@ -25,6 +25,9 @@
       </b-collapse>
 
     </b-navbar>
+    <div class="loader-modal" v-show="loaderVisible">
+      <vue-simple-spinner size="massive" :line-size="10"></vue-simple-spinner>
+    </div>
   </div>
 </template>
 
@@ -33,11 +36,13 @@
     name: "generic-header",
     components: { },
     mounted() {
+      appHelpers.loader.register(this.loader);
     },
     data() {
       return {
         state: window.appState,
         headerMessages: [],
+        loaderVisible: false,
       };
     },
     methods: {
@@ -49,6 +54,9 @@
       },
       logout(event) {
         window.location = appHelpers.url.fix("/log/out");
+      },
+      loader(visible) {
+        this.loaderVisible = visible;
       },
     },
     computed: {
@@ -73,13 +81,5 @@
     background-color: black;
     opacity: 0.8;
     z-index: 2000;
-  }
-
-  .close-button {
-    z-index: 10;
-    position: relative;
-    bottom: 60px;
-    right: 10px;
-    margin-bottom: -60px;
   }
 </style>

@@ -48,7 +48,7 @@
       if (queryParams.authFailed) {
         this.messages.push(appHelpers.message.create('Your attempt to authenticate failed.  Please try again.', 'danger'));
       }
-      this.successUrl = this.state.relativeBaseUrl + (queryParams.successUrl ? queryParams.successUrl : 'home');
+      this.successUrl = this.state.relativeBaseUrl + (queryParams.successUrl ? queryParams.successUrl : '');
       if (this.state.authDirectEnable || this.state.authActiveDirectoryEnable)
       {
         this.$refs.fldUserName.focus();

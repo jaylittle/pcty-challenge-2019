@@ -14,5 +14,8 @@ window.VueRouter = VueRouter;
 import BootstrapVue from "bootstrap-vue";
 
 Vue.use(BootstrapVue);
-
 window.BootstrapVue = BootstrapVue;
+
+import Spinner from "vue-simple-spinner";
+
+Vue.component('vue-simple-spinner', Spinner);

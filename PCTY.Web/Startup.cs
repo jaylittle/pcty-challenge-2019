@@ -171,6 +171,7 @@ namespace PCTY.Web
         var response = context.Response;
 
         if (!request.Path.ToString().StartsWith("/api", StringComparison.OrdinalIgnoreCase) &&
+          !request.Path.ToString().StartsWith("/token", StringComparison.OrdinalIgnoreCase) &&
           (response.StatusCode == (int)HttpStatusCode.Unauthorized || response.StatusCode == (int)HttpStatusCode.Forbidden)
         ) {
           response.Redirect("/log/in");

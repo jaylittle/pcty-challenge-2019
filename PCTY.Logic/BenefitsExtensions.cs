@@ -24,7 +24,7 @@ namespace PCTY.Logic
       double benefitCost = (1.00 - employee.GetBenefitsDiscountRate()) * EMPLOYEE_BENEFIT_COST;
       if (employee.Dependents != null && employee.Dependents.Count > 0)
       {
-        benefitCost += employee.Dependents.Sum(d => (1.00 - d.GetBenefitsDiscountRate()) * d.CalculateBenefitCosts());
+        benefitCost += employee.Dependents.Sum(d => d.CalculateBenefitCosts());
       }
       return benefitCost;
     }

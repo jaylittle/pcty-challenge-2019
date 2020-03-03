@@ -1,24 +1,30 @@
 <template>
   <div>
     <generic-header></generic-header>
-    <div class="container">
-      <h1>Placeholder</h1>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+
+  import homeEmployee from '../components/home/employee.vue'
+
+  const homeRoutes = [
+    { name: 'Employees', path: '/', component: homeEmployee },
+    { path: '*', component: { template: '<h1>Route Not Found</h1>' } }
+  ];
+
+  const homeRouter = new VueRouter({
+    mode: 'history',
+    base: `${window.appState.relativeBaseUrl}/`,
+    routes: homeRoutes
+  });
+  
   export default {
-    name: "login",
+    name: "home",
+    router: homeRouter,
     mounted() {
-    },
-    data() {
-      return {
-        state: window.appState,
-        messages: []
-      };
-    },
-    computed: {
+      window.spa = this;
     }
   };
 </script>

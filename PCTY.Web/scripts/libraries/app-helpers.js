@@ -106,7 +106,115 @@ let self = {
         variant: variant || 'danger'
       };
     }
-  }
+  },
+  loader: {
+    listeners: [],
+    currentCounter: 0,
+    register(listener) {
+      self.loader.listeners.push(listener);
+    },
+    start() {
+      self.loader.currentCounter++;
+      self.loader.notify();
+    },
+    stop() {
+      self.loader.currentCounter--;
+      self.loader.notify();
+    },
+    notify() {
+      self.loader.listeners.forEach((listener) => {
+        listener(!!self.loader.currentCounter);
+      });
+    }
+  },
+  formatters: {
+    formatDate (value) {
+      return value ? moment(value).format('YYYY-MM-DD HH:mm') : 'N/A';
+    },
+    formatDateSansTime (value) {
+      return value ? moment(value).format('YYYY-MM-DD') : 'N/A';
+    },
+    formatDateSansTimeShort (value) {
+      return value ? moment(value).format('MM/DD/YY') : 'N/A';
+    },
+    formatDateWithSeconds (value) {
+      return value ? moment(value).format('YYYY-MM-DD HH:mm:ss') : 'N/A';
+    },
+    formatDateTime (value) {
+      return value ? moment(value).format('YYYY-MM-DD HH:mm') : 'N/A';
+    },
+    formatCurrency (value) {
+      if (typeof value !== "number" && isNaN(parseFloat(value))) {
+        return value;
+      }
+      var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2
+      });
+      return formatter.format(typeof value == "number" ? value : parseFloat(value));
+    },
+    formatCurrencyInt (value) {
+      if (typeof value !== "number" && isNaN(parseFloat(value))) {
+        return value;
+      }
+      var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+      return formatter.format(typeof value == "number" ? value : parseFloat(value));
+    },
+    formatCurrencyExtreme (value) {
+      if (typeof value !== "number" && isNaN(parseFloat(value))) {
+        return value;
+      }
+      var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 4
+      });
+      return formatter.format(typeof value == "number" ? value : parseFloat(value));
+    },
+    formatFloat (value) {
+      if (typeof value !== "number" && isNaN(parseFloat(value))) {
+        return value;
+      }
+      return (typeof value == "number" ? value : parseFloat(value)).toFixed(2);
+    },
+    formatPreciseFloat (value) {
+      if (typeof value !== "number" && isNaN(parseFloat(value))) {
+        return value;
+      }
+      return (typeof value == "number" ? value : parseFloat(value)).toFixed(4);
+    },
+    formatPercent(value) {
+      if (typeof value !== "number" && isNaN(parseFloat(value))) {
+        return value;
+      }
+      return (typeof value == "number" ? value : parseFloat(value)).toFixed(1) + '%';
+    },
+    formatInt(value) {
+      if (typeof value !== "number" && isNaN(parseFloat(value))) {
+        return value;
+      }
+      return (typeof value == "number" ? value : parseFloat(value)).toFixed(0);
+    },
+    formatBool(value) {
+      if (value) {
+        return "Y";
+      } else {
+        return "N";
+      }
+    },
+    trimString(value, length) {
+      if (typeof value !== "string") {
+        return value;
+      }
+      return value.substring(0, length);
+    },
+  },
 };
 
 export default self;
