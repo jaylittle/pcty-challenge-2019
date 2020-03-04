@@ -10,7 +10,7 @@ namespace PCTY.Data.Interfaces
     Task<IEnumerable<EmployeeModel>> ListEmployees(Guid? guid = null);
     Task InsertEmployee(EmployeeModel record);
     Task UpdateEmployee(EmployeeModel record);
-    Task DeleteEmployee(Guid? guid = null);
+    Task DeleteEmployee(Guid guid);
     Task<IEnumerable<DependentModel>> ListDependents(Guid? guid = null, Guid? employeeGuid = null);
     Task InsertDependent(DependentModel record);
     Task UpdateDependent(DependentModel record);

@@ -19,6 +19,7 @@
     <b-table :items="employees" :fields="fields">
       <template v-slot:cell(actions)="data">
         <button class="btn btn-primary btn-sm" @click="showEmployee(data.item.guid)">Edit</button>
+        <button class="btn btn-secondary btn-sm" @click="deleteEmployee(data.item.guid)">Delete</button>
       </template>
     </b-table>
     <b-modal ref="modalEmployee" size="lg" :title="employeeTitle" @ok="upsertEmployee" @hidden="hiddenEmployee">
@@ -138,6 +139,7 @@
       formatDate: appHelpers.formatters.formatDate,
       formatCurrency: appHelpers.formatters.formatCurrency,
       init() {
+        this.messages = [ ];
         this.pageSize = 100;
         appHelpers.loader.start();
         return apiClient.employee.list().then((response) => {
@@ -166,7 +168,7 @@
             appHelpers.loader.stop();
           });
         } else {
-          this.editEmployee = { editFlag: false };
+          this.editEmployee = { editFlag: false, dependents: [ ] };
           this.$refs.modalEmployee.show();
         }
       },
@@ -178,6 +180,19 @@
           this.init();
         }, (response) => {
           this.modalMessages = appHelpers.message.getFromResponse(response);
+          modalEvent.preventDefault();
+          this.$refs.modalEmployee.show();
+        }).finally(() => {
+          appHelpers.loader.stop();
+        });
+      },
+      deleteEmployee(employeeGuid) {
+        appHelpers.loader.start();
+        this.messages = [ ];
+        return apiClient.employee.delete(employeeGuid).then((response) => {
+          this.init();
+        }, (response) => {
+          this.messages = appHelpers.message.getFromResponse(response);
           modalEvent.preventDefault();
           this.$refs.modalEmployee.show();
         }).finally(() => {

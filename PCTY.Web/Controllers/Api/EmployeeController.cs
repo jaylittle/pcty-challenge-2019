@@ -65,6 +65,17 @@ namespace PCTY.Web.Controllers.Spas
       return this.BadRequest();
     }
 
+    [HttpDelete("{employeeGuid}")]
+    public async Task<IActionResult> DeleteEmployee(Guid employeeGuid)
+    {
+      if (!Guid.Empty.Equals(employeeGuid))
+      {
+        await _employeeDal.DeleteEmployee(employeeGuid);
+        return this.Ok();
+      }
+      return this.BadRequest();
+    }
+
     [HttpPost("action/calculate-benefit-cost")]
     public IActionResult GetBenefitCosts([FromBody]EmployeeModel record = null)
     {

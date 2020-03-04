@@ -1,5 +1,5 @@
-DELETE
-  Dependent
+DELETE FROM
+  [Dependent]
 WHERE
-  Guid = @Guid AND
-  EmployeeGuid = @EmployeeGuid;
+  (@Guid IS NULL OR Guid = @Guid) AND
+  (@EmployeeGuid IS NULL OR EmployeeGuid = @EmployeeGuid);

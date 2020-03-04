@@ -16,6 +16,9 @@ let self = module.exports = {
     get(employeeId) {
       return Vue.http.get(self.fixUrl(`/api/employee/${employeeId}`));
     },
+    delete(employeeId) {
+      return Vue.http.delete(self.fixUrl(`/api/employee/${employeeId}`));
+    },
     upsert(employee) {
       return Vue.http.post(self.fixUrl(`/api/employee/`), employee);
     },

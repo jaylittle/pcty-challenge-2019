@@ -38,7 +38,7 @@ namespace PCTY.Data
       }
     }
 
-    public async Task DeleteEmployee(Guid? guid = null)
+    public async Task DeleteEmployee(Guid guid)
     {
       using (var ct = GetConnection(DatabaseType.PCTY, false))
       {
