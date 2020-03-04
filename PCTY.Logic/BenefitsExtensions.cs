@@ -10,13 +10,15 @@ namespace PCTY.Logic
   {
     public const double EMPLOYEE_BENEFIT_COST = 1000;
     public const double DEPENDENT_BENEFIT_COST = 500;
+    public const double SPECIAL_NAME_DISCOUNT_RATE = 0.10;
+    public const double STANDARD_NAME_DISCOUNT_RATE = 0.00;
     public static double GetBenefitsDiscountRate(this IPersonModel person)
     {
       if ((person?.FirstName ?? string.Empty).StartsWith("A", StringComparison.OrdinalIgnoreCase))
       {
-        return 0.10;
+        return SPECIAL_NAME_DISCOUNT_RATE;
       }
-      return 0.00;
+      return STANDARD_NAME_DISCOUNT_RATE;
     }
 
     public static double GetBenefitCosts(this EmployeeModel employee)
