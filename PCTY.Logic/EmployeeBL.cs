@@ -109,13 +109,20 @@ namespace PCTY.Logic
       return retvalue;
     }
 
+    public const string TYPE_EMPLOYEE = "Employee";
+    public const string TYPE_DEPENDENT = "Dependent {0}";
+    public const string ERROR_YEARLY_SALARY_AT_LEAST_ZERO = "{0} Yearly Salary must be at least zero!";
+    public const string ERROR_FIRST_NAME_REQUIRED = "{0} First Name is required!";
+    public const string ERROR_LAST_NAME_REQUIRED = "{0} Last Name is required!";
+    public const string ERROR_RELATIONSHIP_REQUIRED = "{0} Relationship is required!";
+
     public OpResult ValidateEmployee(EmployeeModel record)
     {
       var retvalue = new OpResult();
-      retvalue.Inhale(ValidatePerson(record));
+      retvalue.Inhale(ValidatePerson(record, TYPE_EMPLOYEE));
       if (record.YearlySalary < 0)
       {
-        retvalue.LogError("Employee Yearly Salary must be at least zero!");
+        retvalue.LogError(string.Format(ERROR_YEARLY_SALARY_AT_LEAST_ZERO, TYPE_EMPLOYEE));
       }
 
       if (record.Dependents != null && record.Dependents.Any())
@@ -123,10 +130,11 @@ namespace PCTY.Logic
         var dependentCounter = 1;
         foreach  (var dependent in record.Dependents)
         {
-          retvalue.Inhale(ValidatePerson(dependent, $"Dependent #{dependentCounter}"));
+          var personType = string.Format(TYPE_DEPENDENT, dependentCounter);
+          retvalue.Inhale(ValidatePerson(dependent, personType));
           if (string.IsNullOrWhiteSpace(dependent.Relationship))
           {
-            retvalue.LogError($"Dependent #{dependentCounter} Relationship is required!");
+            retvalue.LogError(string.Format(ERROR_RELATIONSHIP_REQUIRED, personType));
           }
           dependentCounter++;
         }
@@ -134,16 +142,16 @@ namespace PCTY.Logic
       return retvalue;
     }
 
-    public OpResult ValidatePerson(IPersonModel record, string type = "Employee")
+    public OpResult ValidatePerson(IPersonModel record, string type)
     {
       var retvalue = new OpResult();
       if (string.IsNullOrWhiteSpace(record.FirstName))
       {
-        retvalue.LogError($"{type} First Name is required!");
+        retvalue.LogError(string.Format(ERROR_FIRST_NAME_REQUIRED, type));
       }
       if (string.IsNullOrWhiteSpace(record.LastName))
       {
-        retvalue.LogError($"{type} Last Name is required!");
+        retvalue.LogError(string.Format(ERROR_LAST_NAME_REQUIRED, type));
       }
       return retvalue;
     }

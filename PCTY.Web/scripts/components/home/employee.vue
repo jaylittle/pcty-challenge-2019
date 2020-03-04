@@ -21,7 +21,8 @@
         <button class="btn btn-primary btn-sm" @click="showEmployee(data.item.guid)">Edit</button>
       </template>
     </b-table>
-    <b-modal ref="modalEmployee" size="lg" :title="employeeTitle" @ok="upsertEmployee" @hide="hideEmployee">
+    <b-modal ref="modalEmployee" size="lg" :title="employeeTitle" @ok="upsertEmployee" @hidden="hiddenEmployee">
+      <b-alert :show="message.countdown || true" fade dismissible v-for="message in modalMessages" :key="message.text" :variant="message.variant || 'danger'">{{ message.text }}</b-alert>
       <div class="row px-1">
         <div class="col-md-12">
           <h5 class="pb-3">
@@ -120,7 +121,8 @@
         pageSize: 0,
         currentPage: 1,
         totalRows: 0,
-        messages: []
+        messages: [],
+        modalMessages: []
       };
     },
     computed: {
@@ -168,20 +170,25 @@
           this.$refs.modalEmployee.show();
         }
       },
-      upsertEmployee(employee) {
+      upsertEmployee(modalEvent) {
         appHelpers.loader.start();
+        this.modalMessages = [ ];
         return apiClient.employee.upsert(this.editEmployee).then((response) => {
           this.hideEmployee();
           this.init();
         }, (response) => {
-          this.messages = appHelpers.message.getFromResponse(response);
+          this.modalMessages = appHelpers.message.getFromResponse(response);
+          modalEvent.preventDefault();
+          this.$refs.modalEmployee.show();
         }).finally(() => {
           appHelpers.loader.stop();
         });
       },
       hideEmployee() {
-        this.editEmployee = { };
         this.$refs.modalEmployee.hide();
+      },
+      hiddenEmployee() {
+        this.editEmployee = { };
       },
       addDependent() {
         this.dependentCtr++;
