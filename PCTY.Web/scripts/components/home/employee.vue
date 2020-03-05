@@ -48,10 +48,16 @@
         <div class="form-group col-md-6">
           <label>Yearly Salary</label>
           <input type="text" class="form-control d-print-none" v-model="editEmployee.yearlySalary">
+          <small class="form-text text-muted">
+            Per Check: {{ perCheckSalary }}
+          </small>
         </div>
         <div class="form-group col-md-6 text-right">
-          <label>Benefit Cost</label>
+          <label>Yearly Benefit Cost</label>
           <div> {{ formatCurrency(editEmployee.benefitCost) }}</div>
+          <small class="form-text text-muted">
+            Per Check: {{ perCheckBenefitCost }}
+          </small>
         </div>
       </div>
       <div class="row px-1">
@@ -122,7 +128,9 @@
         },
         totalRows: 0,
         messages: [],
-        modalMessages: []
+        modalMessages: [],
+        payChecksPerYear: 26.00,
+        defaultPayCheckAmount: 2000.00
       };
     },
     computed: {
@@ -138,6 +146,12 @@
           return `(${this.editEmployee.dependents.length})`;
         }
         return '';
+      },
+      perCheckBenefitCost() {
+        return this.formatCurrency((this.editEmployee.benefitCost || 0) / this.payChecksPerYear);
+      },
+      perCheckSalary() {
+        return this.formatCurrency((this.editEmployee.yearlySalary || 0) / this.payChecksPerYear);
       }
     },
     methods: {
@@ -172,7 +186,12 @@
             appHelpers.loader.stop();
           });
         } else {
-          this.editEmployee = { editFlag: false, dependents: [ ] };
+          this.editEmployee = {
+            yearlySalary: this.payChecksPerYear * this.defaultPayCheckAmount,
+            benefitCost: 1000.00,
+            editFlag: false,
+            dependents: [ ]
+          };
           this.$refs.modalEmployee.show();
         }
       },
