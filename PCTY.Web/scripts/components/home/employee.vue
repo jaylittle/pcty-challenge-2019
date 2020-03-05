@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <b-table :items="employees" :fields="fields">
+    <b-table :items="employees" :fields="fields" :filter="filters.searchText">
       <template v-slot:cell(actions)="data">
         <button class="btn btn-primary btn-sm" @click="showEmployee(data.item.guid)">Edit</button>
         <button class="btn btn-secondary btn-sm" @click="deleteEmployee(data.item.guid)">Delete</button>
@@ -28,10 +28,11 @@
         <div class="col-md-12">
           <h5 class="pb-3">
             General
+            <button class="float-right btn btn-info btn-sm mx-1" @click="calculateBenefitCost()">Recalc Benefit Cost</button>
           </h5>
         </div>
       </div>
-      <div class="form-row">
+      <div class="form-row pt-2 border-top">
         <div class="form-group col-md-5">
           <label>First Name</label>
           <input type="text" class="form-control d-print-none" v-model="editEmployee.firstName">
@@ -56,12 +57,12 @@
       <div class="row px-1">
         <div class="col-md-12">
           <h5 class="pb-3">
-            Dependents
-            <button class="float-right btn btn-primary btn-sm mx-1" @click="addDependent()">Add Dependent</button>
+            Dependents {{ employeeDependentCount }}
+            <button class="float-right btn btn-success btn-sm mx-1" @click="addDependent()">Add Dependent</button>
           </h5>
         </div>
       </div>
-      <div class="form-row" v-for="(dependent, index) in editEmployee.dependents" :key="index">
+      <div class="form-row pt-2 border-top" v-for="(dependent, index) in editEmployee.dependents" :key="index">
         <div class="form-group col-md-5">
           <label>First Name</label>
           <input type="text" class="form-control d-print-none" v-model="dependent.firstName">
@@ -79,7 +80,7 @@
           <input type="text" class="form-control d-print-none" v-model="dependent.relationship">
         </div>
         <div class="form-group col-md-7">
-          <button class="float-right btn btn-primary btn-sm mx-1" @click="removeDependent(dependent)">Remove Dependent</button>
+          <button class="float-right btn btn-danger btn-sm mx-1" @click="removeDependent(dependent)">Remove Dependent</button>
         </div>
       </div>
     </b-modal>
@@ -119,8 +120,6 @@
           sortField: '',
           sortDescending: false
         },
-        pageSize: 0,
-        currentPage: 1,
         totalRows: 0,
         messages: [],
         modalMessages: []
@@ -133,6 +132,12 @@
         } else {
           return 'Adding New Employee';
         }
+      },
+      employeeDependentCount() {
+        if (this.editEmployee.dependents && this.editEmployee.dependents.length) {
+          return `(${this.editEmployee.dependents.length})`;
+        }
+        return '';
       }
     },
     methods: {
@@ -153,7 +158,6 @@
       },
       onFiltered (filteredItems) {
         this.totalRows = filteredItems.length;
-        this.currentPage = 1;
       },
       showEmployee(employeeGuid) {
         if (employeeGuid) {
@@ -215,6 +219,17 @@
         if (dependentIndex >= 0) {
           this.editEmployee.dependents.splice(dependentIndex, 1);
         }
+      },
+      calculateBenefitCost() {
+        appHelpers.loader.start();
+        this.modalMessages = [ ];
+        return apiClient.employee.calculateBenefitCost(this.editEmployee).then((response) => {
+          this.editEmployee.benefitCost = parseFloat(response.body);
+        }, (response) => {
+          this.modalMessages = appHelpers.message.getFromResponse(response);
+        }).finally(() => {
+          appHelpers.loader.stop();
+        });
       }
     }
   };
