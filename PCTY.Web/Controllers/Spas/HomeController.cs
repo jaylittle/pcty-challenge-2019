@@ -27,14 +27,20 @@ namespace PCTY.Web.Controllers.Spas
     [HttpGet("")]
     public IActionResult Index()
     {
-      return Home();
+      var state = new Models.AppStateModel(_svp, Settings.Current, _httpAccessor.HttpContext, "Home", "home");
+      return View("Spa", state);
     }
 
     [HttpGet("home")]
     public IActionResult Home()
     {
-      var state = new Models.AppStateModel(_svp, Settings.Current, _httpAccessor.HttpContext, "Home", "home");
-      return View("Spa", state);
+      return Redirect($"{Settings.Current.RelativeBaseUrl}");
+    }
+
+    [HttpGet("/home/{*path}")]
+    public IActionResult SubHome(string path)
+    {
+      return Home();
     }
   }
 }
