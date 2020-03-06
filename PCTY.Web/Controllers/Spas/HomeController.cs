@@ -40,7 +40,7 @@ namespace PCTY.Web.Controllers.Spas
     [HttpGet("/home/{*path}")]
     public IActionResult SubHome(string path)
     {
-      return Home();
+      return Index();
     }
   }
 }
