@@ -1,3 +1,7 @@
+# Disclaimer
+
+They chose not to hire me after submitting this and interviewing me over it, so I would encourage you to try and do better.
+
 # What
 
 2019 Paylocity Coding Challenge Project
