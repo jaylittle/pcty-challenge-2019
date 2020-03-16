@@ -61,7 +61,7 @@ namespace PCTY.Web.Models
       SubTitle = subTitle;
       VueComponent = vueComponent;
       _svp = svp;
-      Title = title ?? $"PCTY 2019 - Jay Little";
+      Title = title ?? $"PCTY 2020 - Jay Little";
 
       Init();
     }
